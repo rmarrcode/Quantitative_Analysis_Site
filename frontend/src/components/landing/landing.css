@@ -1,0 +1,49 @@
+.landing {
+    text-align: center;
+    font-family: Camphor, Open Sans, Segoe UI, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: white;
+    background-image: white;
+    /* linear-gradient(43deg, white 0%, rgb(129, 109, 84) 100%); */
+  }
+  
+  .landing__body {
+    flex-direction: row;
+    display: flex;
+    
+  }
+  
+  .landing__body__left {
+    flex-direction: column;
+    display: flex;
+    
+  }
+  
+  .landing__body__right {
+    margin-left: 150px;
+    margin-top: 75px;
+    float: right;
+  }
+  
+  .landing__body__2 {
+    width: 100%;
+    margin-top: 150px;
+  }
+  
+  .landing__body__3 {
+    margin-top: 150px;
+    
+  }
+  
+  .bottom__page {
+    background-color: white;
+    margin-top: -25px;
+   
+  }
+
+  .column {
+    float: left;
+    width: 50%;
+  }
