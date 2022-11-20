@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish&family=Poppins:wght@200;300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&family=Ubuntu:wght@300;400;500;700&display=swap');
+
+
+.brains__body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eaf6ff;
+}
+.brains__card {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 25px 25px 50px rgba(9,148,255,0.25),
+    -10px -10px 30px rgba(9,148,255,0.1),
+    inset -5px -5px 15px rgba(9,148,255,0.5);
+}
+.brains__img-box {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 6px;
+} 
+.brains__img-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.brains__content {
+    width: 100%;
+    padding: 30px 20px;
+    display: grid;
+    place-items: center;
+}
+.brains__content h3 {
+    color: #0994ff;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.brains__content h3 span {
+    font-size: 0.8em;
+    font-weight: 500;
+    color: #333;
+    text-transform: initial;
+}
+.brains__content .sci {
+    position: relative;
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
+.brains__content .sci li {
+    list-style: none;
+}
+.content .sci li a {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    margin: 0 8px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    background-color: #fff;
+    color: #0994ff;
+    font-size: 1.15em;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(9,148,255,0.25),
+    -2px -2px 5px rgba(9,148,255,0.05),
+    inset -2px -2px 5px rgba(9,148,255,0.25);
+}

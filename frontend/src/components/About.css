@@ -1,0 +1,35 @@
+.example__graph > img {
+
+    background-size: cover;
+    box-shadow: 0 0 140px 10px rgba(0,0,0,.5);
+    position: relative;
+    height: 300px;
+    width: 500px;
+    border-radius: 30px;
+    overflow: hidden; /* Try removing this to see how the sheen works! */
+    --sheenX: 0; /* Set these with JavaScript */
+    --sheenY: 0;
+
+}
+
+.story {
+    float: left;
+    width: 33.33%;
+    padding-top: 30px;
+    
+}
+
+
+.about__body::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .story > h2 {
+    font-weight: 400;
+  }
+
+  .about__icon {
+    font-size: 75px;
+  }

@@ -1,0 +1,107 @@
+
+/* Account class */
+.account {
+    padding: 5%;
+}
+.nav-tabs {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+hr {
+    border-top: 5px solid tan;
+    margin: 0%;
+    opacity: 1.0;
+}
+
+/* Clean this up. */
+.matador {
+    background-color: white !important;
+    color: black !important;
+}
+
+
+.matador-footer {
+    background-color: black !important;
+    color: white !important;
+
+}
+
+.navbar {
+    background-color: black;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.navbar-brand {
+    box-shadow: inset 0 0 0 0 white;
+    color: white;
+    margin: 0 -.25rem;
+    padding: 0 .25rem;
+    transition: color .1s ease-in-out, box-shadow .1s ease-in-out;
+}
+
+.navbar-brand:hover {
+    box-shadow: inset 100px 0 0 0 tan;
+    color: white;
+}
+
+.nav-link {
+    color: white !important;
+    position: relative;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background-color: tan;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .1s ease-in-out;
+}
+
+.nav-link:hover::before {
+transform-origin: right;
+transform: scaleX(1);
+}
+
+/* For SignIn SignOut components */
+.authform {
+    margin: auto;
+    max-width: 400px;
+    width: 50%;
+    padding: 30px;
+    margin-top: 2%;
+    color: black;
+    background: white;
+    border: solid tan;
+    border-width: 5px;
+    border-radius: 5px;
+}
+
+/* .dashboard {
+    margin: auto;
+    margin-top: 2%;
+    border: solid black;
+    border-width: 2px;
+    padding: 0px;
+    flex-grow: 1;
+    height: 100%;
+} */
+
+.portfolio-entry {
+    padding: 5px;
+    border: solid black;
+    border-width: 2px;
+    border-radius: 20px;
+    font-size: large;
+}
+
+

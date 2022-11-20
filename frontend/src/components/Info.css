@@ -1,0 +1,51 @@
+.info {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    margin-left: 50px;
+    
+    
+}
+
+
+/* Need to update this, inheriting margin-top shouldn't be negative */
+.info h2 {
+    
+    text-align: justify;
+    margin-top: -20px;
+    font-weight: 400;
+    font-size: 2.5vw;
+}
+
+.info h1 {
+    
+    text-align: justify;
+    font-size: 50pt;
+    font-size: 5vw;
+}
+
+.info__signup {
+    margin-top: 20px;
+    padding: 15px 25px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #8641d0;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px #999;
+    width: fit-content;
+
+  }
+  
+  .info__signup:hover {background-color: rgb(237, 157, 36)}
+  
+  .info__signup:active {
+    background-color: #8641d0;
+    box-shadow: 0 3px #666;
+    transform: translateY(4px);
+  }
+
