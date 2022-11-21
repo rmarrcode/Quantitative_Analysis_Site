@@ -7,8 +7,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // TO get bootstr
 import { BrowserRouter, Routes, Route, } from "react-router-dom"
 import { AuthProvider } from './components/auth/useAuth';
 
-import MatadorLanding from './components/landing/landing';
-import MatadorSignin from "./components/auth/signin";
+import Console from './components/console/console';
+import Signin from "./components/auth/signin";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -16,8 +16,8 @@ root.render(
   <BrowserRouter>
     <AuthProvider>
         <Routes>
-          <Route path="/" element={<MatadorLanding/>} />
-          <Route path="/signin" element={<MatadorSignin />} />
+          <Route path="/console" element={<Console/>} />
+          <Route path="/" element={<Signin />} />
         </Routes> 
     </AuthProvider>
   </BrowserRouter>

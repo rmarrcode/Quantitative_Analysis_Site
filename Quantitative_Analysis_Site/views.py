@@ -7,11 +7,13 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 #from django.utils.encoding import force_bytes, force_text
-from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from constants import *
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+
 
 import json
 import os
@@ -37,6 +39,24 @@ URL = 'http://'+ALG_IP+':8000'
 def frontend(request):
     context = {}
     return render(request, "index.html", context)
+
+@csrf_exempt
+def signin(request):
+    print("-----------HERE--------------------")
+    auth = False
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    
+    print("Authenticating User", user)
+    if user is not None:
+        auth = True
+        login(request, user) # Does this return anything?
+    ret = {
+        "auth": auth,
+        }    
+    return JsonResponse(ret)
+    #return redirect('console')
 
 @csrf_exempt
 def deploy(request):

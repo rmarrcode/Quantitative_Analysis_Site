@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const signinFrontend = async (data) => {
     setUser(data);
-    navigate("/dashboard"); //  Change this if deploy is not the main page they go to.
+    navigate("/console"); //  Change this if deploy is not the main page they go to.
   };
 
   // call this function to sign out logged in user

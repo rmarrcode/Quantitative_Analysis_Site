@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Quantitative_Analysis_Site',
     'rest_framework',
-    'frontend'
+    'frontend',
 ]
 
 MIDDLEWARE = [

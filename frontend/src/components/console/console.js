@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import './landing.css';
+import './console.css';
 
-function Landing() {
+function Console() {
 
   const [allBranches, setAllBranches] = useState([])
   const [message, setMessage] = useState('');
@@ -160,4 +160,4 @@ function Landing() {
   );
 }
 
-export default Landing;
+export default Console;
