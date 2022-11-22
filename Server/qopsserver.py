@@ -24,11 +24,12 @@ class MyServer(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'data':lst}).encode('utf-8'))
         elif req['op'] == 'deploy':
+            print('IN DEPLOY')
             print(req)
-            #os.system('docker run portfolio_learning ' + req['request']) 
+            os.system('docker run portfolio_learning ' + '--tickers ' + req['tickers'])
             #self.wfile.write(response.getvalue())
             #self.wfile.write(json.dumps({'data': 'data'}).encode('utf-8'))
-            #deploy the actual expirement
+            #deploy the actual experiment 
             #this kinda sucks
             time.sleep(2)
             lst = os.listdir('experiments')
@@ -38,7 +39,7 @@ class MyServer(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'data':lst}).encode('utf-8'))
         elif req['op'] == 'getbranches':
-            r = Repo('/home/ec2-user/portfolio_learning')
+            r = Repo('/home/ubuntu/portfolio_learning')
             self.send_response(200)
             self.send_header("Content-type", "json")
             self.end_headers()
