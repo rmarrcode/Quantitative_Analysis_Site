@@ -25,7 +25,8 @@ function Console() {
       .catch(error => console.log('error', error))
   }
 
-  const deploy = async => {
+  
+  async function deploy() {
     var data = {
       'op': 'deploy',
       'branch': formBranch,
