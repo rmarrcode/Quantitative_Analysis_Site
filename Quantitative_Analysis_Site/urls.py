@@ -22,7 +22,7 @@ urlpatterns = [
     # Admin URLS
     re_path('admin', admin.site.urls),
     path('api/deploy', views.deploy),
-    path('api/getresults', views.getResults),
+    path('api/getExperimentData', views.getExperimentData),
     path('api/getbranches', views.getBranches),
     path('api/signinUser', views.signin),
     re_path('', views.frontend), # landing page.  

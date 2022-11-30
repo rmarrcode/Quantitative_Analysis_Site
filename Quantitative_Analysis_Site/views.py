@@ -42,7 +42,6 @@ def frontend(request):
 
 @csrf_exempt
 def signin(request):
-    print("-----------HERE--------------------")
     auth = False
     username = request.POST['username']
     password = request.POST['password']
@@ -60,25 +59,22 @@ def signin(request):
 
 @csrf_exempt
 def deploy(request):
-    print('indeploy')
-    print(type(request.POST))
-    print(request.body.decode('UTF-8'))
-    print(type(request.body.decode('UTF-8')))
     reqstr = request.body.decode('UTF-8')
     data = json.loads(reqstr)
-    print(data)
     x = requests.post(URL, json = data)
+    print(f"deploy data {x.json()}")
     return JsonResponse(x.json())
 
 @csrf_exempt
-def getResults(request):
-    x = requests.post(URL, json = {'op': 'getresults'})
-    print(type(x))
-    print(x.json())
+def getExperimentData(request):
+    reqstr = request.body.decode('UTF-8')
+    data = json.loads(reqstr)
+    x = requests.post(URL, json = data)
+    print(f"getExperimentData {x.json()}")
     return JsonResponse(x.json())
 
 @csrf_exempt
 def getBranches(request):
     x = requests.post(URL, json = {'op': 'getbranches'})
-    print(x.json())
+    print(f"getBranchesData {x.json()}")
     return JsonResponse(x.json())

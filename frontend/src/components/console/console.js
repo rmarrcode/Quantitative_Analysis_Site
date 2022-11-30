@@ -12,6 +12,7 @@ function Console() {
   const [formTickers, setFormTickers] = useState('');
   const [formStartDate, setFormStartDate] = useState('');
   const [formEndDate, setFormEndDate] = useState('');
+  const [experimentData, setExperimentData] = useState({})
 
   const getAllBranches = async event => {
     var requestOptions = {
@@ -24,7 +25,7 @@ function Console() {
       .catch(error => console.log('error', error))
   }
 
-  const deploy = async event => {
+  const deploy = async => {
     var data = {
       'op': 'deploy',
       'branch': formBranch,
@@ -47,32 +48,29 @@ function Console() {
       .catch(error => console.log('error', error))
   };
 
-  // const handlePress = async event => {
-  //   var requestOptions = {
-  //     method: 'GET',
-  //     redirect: 'follow'
-  //   };
-  //   fetch("api/getresults", requestOptions)
-  //     .then(response => response.text())
-  //     .then(result => setPastEvents(JSON.parse(result).data))
-  //     .catch(error => console.log('error', error))
-  // }
 
+  const addExperimentData = (experimentData, experiment, data) => {
+    const val = experimentData
+    val[experiment] = data
+    return val
+  }
+
+  //const getExperimentData (id) = async event => {
   async function getExperimentData(id) {
     var data = {
-
+      'op': 'getexperimentdata',
+      'id': id,
     }
     var requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(id)
+      body: JSON.stringify(data)
     };
-    fetch("api/getresults", requestOptions)
-      .then(response => response.text())
-      .then(result => setPastEvents(JSON.parse(result).data))
+    fetch("api/getExperimentData", requestOptions)
+      .then(response => console.log(response.text()))
+      .then(result => console.log(JSON.parse(result).data))
       .catch(error => console.log('error', error))
   }
 
@@ -89,8 +87,9 @@ function Console() {
   useEffect(() => {
     getAllBranches()
   }, []);
-  console.log(allBranches)
-  console.log(pastEvents)
+
+  console.log(experimentData)
+
   return (
     <div class="row">
 
@@ -151,7 +150,16 @@ function Console() {
         <h1>PAST EVENTS</h1>
         {pastEvents.map(element => {
           return (
-            <tr><td><p>{element}</p><button onClick={getExperimentData(element)}>details</button></td></tr>
+            <div>
+              <tr><td>
+                <p>{element}</p>
+                  {
+                    element in experimentData ? 
+                    <p>experimentData[element]</p> : 
+                    <button onClick={x => getExperimentData(element)}>details</button>
+                  }
+              </td></tr>
+            </div>
           );
         })}
       </div>

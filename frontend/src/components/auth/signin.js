@@ -39,21 +39,6 @@ const SignIn = () => {
         password: formData.get("password")
       });
     }
-
-      // TODO: RYAN CONNECT THIS BACK AGAIN
-      // if (apiResponse.kyc_complete) {
-      // // Persist the login state to react so the user can access protected routes.
-      //   signinFrontend({
-      //     username: formData.get("username"),
-      //     password: formData.get("password")
-      //   });
-    // }
-    // else {
-    //   navigate("/kyc", {replace : true})
-    // }
-    // } else {
-    //   alert("Auth Failed");
-    // }
     
   };
 

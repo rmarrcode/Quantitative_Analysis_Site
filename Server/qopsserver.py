@@ -6,6 +6,7 @@ import os
 from getdata import getdata
 from git import Repo
 import time
+from synthesize_report import get_experiment_summaries
 
 hostName = '0.0.0.0'
 serverPort = 8000
@@ -45,7 +46,15 @@ class MyServer(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'ec2 data':[x.name for x in r.heads]}).encode('utf-8'))
         elif req['op'] == 'getexpirementdata':
-            pass
+            print(req)
+            exp_ids = req['exp_ids']
+            summary = get_experiment_summaries(exp_ids)
+            self.send_response(200)
+            self.send_header("Content-type", "json")
+            self.end_headers()
+            self.wfile.write(json.dumps(summary).encode('utf-8'))
+
+
 
 
 if __name__ == "__main__":
