@@ -25,7 +25,6 @@ function Console() {
       .catch(error => console.log('error', error))
   }
 
-  
   async function deploy() {
     var data = {
       'op': 'deploy',
@@ -35,13 +34,13 @@ function Console() {
       'startDate': formStartDate,
       'endDate': formEndDate,
     }
-    console.log(data)
     var requestOptions = {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      redirect: 'follow'
     };
     fetch("api/deploy", requestOptions)
       .then(response => response.text())
@@ -50,29 +49,33 @@ function Console() {
   };
 
 
-  const addExperimentData = (experimentData, experiment, data) => {
-    const val = experimentData
-    val[experiment] = data
-    return val
+  function updateExperimentData(id, result) {
+    var newObj= {};
+    newObj[id] = result;
+    setExperimentData(olddata => ({
+      ...olddata,
+      ...newObj})
+    )
   }
 
-  //const getExperimentData (id) = async event => {
   async function getExperimentData(id) {
-    var data = {
-      'op': 'getexperimentdata',
-      'id': id,
-    }
+    var raw = JSON.stringify({
+      "op": "getexperimentdata",
+      "id": id
+    });
     var requestOptions = {
-      method: 'post',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: raw,
+      redirect: 'follow'
     };
+    
     fetch("api/getExperimentData", requestOptions)
-      .then(response => console.log(response.text()))
-      .then(result => console.log(JSON.parse(result).data))
-      .catch(error => console.log('error', error))
+      .then(response => response.text())
+      .then(result => updateExperimentData(id, result))
+      .catch(error => console.log('error', error));
   }
 
   const makeTable = array => {
@@ -89,11 +92,8 @@ function Console() {
     getAllBranches()
   }, []);
 
-  console.log(experimentData)
-
   return (
     <div class="row">
-
       <div class="column">
         <h1>Stock Selector</h1>
         <form>
@@ -153,18 +153,17 @@ function Console() {
           return (
             <div>
               <tr><td>
-                <p>{element}</p>
-                  {
-                    element in experimentData ? 
-                    <p>experimentData[element]</p> : 
-                    <button onClick={x => getExperimentData(element)}>details</button>
-                  }
+                <p>{element}</p> 
+                {
+                  element in experimentData ? 
+                  <p>{experimentData[element]}</p> : 
+                  <button onClick={x => getExperimentData(element)}>details</button>
+                }
               </td></tr>
             </div>
           );
         })}
       </div>
-      
     </div>
   );
 }
