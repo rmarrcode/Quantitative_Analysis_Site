@@ -25,7 +25,6 @@ import requests
 
 # Settings to get the EMAIL information
 
-
 # Generates Token for email confirmation
 
 
