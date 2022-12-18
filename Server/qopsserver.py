@@ -11,6 +11,7 @@ from synthesize_report import get_experiment_summaries
 hostName = '0.0.0.0'
 serverPort = 8000
 
+
 class MyServer(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
@@ -28,9 +29,6 @@ class MyServer(BaseHTTPRequestHandler):
             print('IN DEPLOY')
             print(req)
             os.system('docker run portfolio_learning ' + '--tickers ' + req['tickers'])
-            #self.wfile.write(response.getvalue())
-            #self.wfile.write(json.dumps({'data': 'data'}).encode('utf-8'))
-            #deploy the actual experiment 
             #this kinda sucks
             time.sleep(2)
             lst = os.listdir('experiments')
@@ -53,7 +51,6 @@ class MyServer(BaseHTTPRequestHandler):
             self.send_header("Content-type", "json")
             self.end_headers()
             self.wfile.write(json.dumps(summary).encode('utf-8'))
-
 
 
 
