@@ -14,7 +14,6 @@ from constants import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-
 import json
 import os
 from dotenv import load_dotenv
@@ -23,6 +22,8 @@ from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 import requests
 
+import boto.ec2
+from boto.manage.cmdshell import sshclient_from_instance
 # Settings to get the EMAIL information
 
 # Generates Token for email confirmation
@@ -60,10 +61,14 @@ def signin(request):
 @csrf_exempt
 def deploy(request):
     reqstr = request.body.decode('UTF-8')
-    data = json.loads(reqstr)
-    x = requests.post(URL, json = data)
-    print(f"deploy data {x.json()}")
-    return JsonResponse(x.json())
+    print(reqstr)
+    conn = boto.ec2.connect_to_region('us-east-1')
+    instance = conn.get_all_instances([ALG_INSTANCE_ID])[0].instances[0]
+    ssh_client = sshclient_from_instance(instance,
+                                     PATH_TO_SSH_KEY,
+                                     user_name=ALG_USER)
+    status, stdout, stderr = ssh_client.run(reqstr)
+    return JsonResponse({})
 
 @csrf_exempt
 def getExperimentData(request):
@@ -76,5 +81,4 @@ def getExperimentData(request):
 @csrf_exempt
 def getBranches(request):
     x = requests.post(URL, json = {'op': 'getbranches'})
-    print(f"getBranchesData {x.json()}")
     return JsonResponse(x.json())
