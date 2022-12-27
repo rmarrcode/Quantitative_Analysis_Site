@@ -22,12 +22,9 @@ from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 import requests
 
-import boto.ec2
-from boto.manage.cmdshell import sshclient_from_instance
-# Settings to get the EMAIL information
-
-# Generates Token for email confirmation
-
+import boto3
+import botocore
+import paramiko
 
 # Load .env file
 load_dotenv()
@@ -60,14 +57,16 @@ def signin(request):
 
 @csrf_exempt
 def deploy(request):
-    reqstr = request.body.decode('UTF-8')
-    print(reqstr)
-    conn = boto.ec2.connect_to_region('us-east-1')
-    instance = conn.get_all_instances([ALG_INSTANCE_ID])[0].instances[0]
-    ssh_client = sshclient_from_instance(instance,
-                                     PATH_TO_SSH_KEY,
-                                     user_name=ALG_USER)
-    status, stdout, stderr = ssh_client.run(reqstr)
+    key = paramiko.RSAKey.from_private_key_file("Credentials/atticus_key.pem")
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        client.connect(hostname='3.85.2.224', username="ubuntu", pkey=key)
+        stdin, stdout, stderr = client.exec_command('docker run portfolio_learning')
+        print (stdout.read())
+        client.close()
+    except Exception as e:
+        print (e)
     return JsonResponse({})
 
 @csrf_exempt
