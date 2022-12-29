@@ -84,6 +84,7 @@ def getBranches(request):
     x = requests.post(URL, json = {'op': 'getbranches'})
     return JsonResponse(x.json())
 
+
 @csrf_exempt
 def updateResults(request):
     # load experiment data
@@ -91,14 +92,13 @@ def updateResults(request):
     data = json.loads(reqstr)
     s3_client = boto3.client(
         's3',
-        aws_access_key_id='AKIAQT7ZDJIGQTH47G3I',
-        aws_secret_access_key='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'
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY
     )
     s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=data['exp_id'])
     s3_exp_data = pickle.loads(s3_object['Body'].read())
-    print(s3_exp_data)
-
-    exp_state = ExpState.load()
-    print(exp_state)
+    updated_exp_data = {'exp_id': data['exp_id'], 'our_log_ret': tuple(s3_exp_data['our_log_ret'])}
+    print(updated_exp_data)
+    exp_state = ExpState.update(updated_exp_data)
 
     return JsonResponse({'success': True})
