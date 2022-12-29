@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/getExperimentData', views.getExperimentData),
     path('api/getbranches', views.getBranches),
     path('api/signinUser', views.signin),
+    path('api/updateresults', views.updateResults),
     re_path('', views.frontend), # landing page.  
 ]

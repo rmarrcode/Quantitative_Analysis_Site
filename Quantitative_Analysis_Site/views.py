@@ -23,8 +23,10 @@ from requests.auth import HTTPBasicAuth
 import requests
 
 import boto3
-import botocore
 import paramiko
+import pickle
+
+from ExpState.models import ExpState
 
 # Load .env file
 load_dotenv()
@@ -81,3 +83,22 @@ def getExperimentData(request):
 def getBranches(request):
     x = requests.post(URL, json = {'op': 'getbranches'})
     return JsonResponse(x.json())
+
+@csrf_exempt
+def updateResults(request):
+    # load experiment data
+    reqstr = request.body.decode('UTF-8')
+    data = json.loads(reqstr)
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id='AKIAQT7ZDJIGQTH47G3I',
+        aws_secret_access_key='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'
+    )
+    s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=data['exp_id'])
+    s3_exp_data = pickle.loads(s3_object['Body'].read())
+    print(s3_exp_data)
+
+    exp_state = ExpState.load()
+    print(exp_state)
+
+    return JsonResponse({'success': True})

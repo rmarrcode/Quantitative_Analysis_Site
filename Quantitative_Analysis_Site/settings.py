@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Quantitative_Analysis_Site',
     'rest_framework',
     'frontend',
+    'ExpState',
 ]
 
 MIDDLEWARE = [
