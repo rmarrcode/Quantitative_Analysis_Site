@@ -98,7 +98,12 @@ def updateResults(request):
     s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=data['exp_id'])
     s3_exp_data = pickle.loads(s3_object['Body'].read())
     updated_exp_data = {'exp_id': data['exp_id'], 'our_log_ret': tuple(s3_exp_data['our_log_ret'])}
-    print(updated_exp_data)
-    exp_state = ExpState.update(updated_exp_data)
-
+    ExpState.update(updated_exp_data)
     return JsonResponse({'success': True})
+
+@csrf_exempt
+def getResults(request):
+    exp_state = ExpState.load()
+    print(exp_state.exp_id)
+    return JsonResponse({'success': True})
+    

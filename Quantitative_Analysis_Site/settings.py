@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'frontend',
     'ExpState',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}

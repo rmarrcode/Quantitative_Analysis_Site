@@ -33,9 +33,9 @@ class ExpState(SingletonModel):
 
     exp_id = models.JSONField(default=jsonfield_default_value)
     
+    #TODO CACHE STUFF
     @classmethod
     def update(cls, exp_new):
-        obj = self.load()
+        obj = cls.load()
         obj.exp_id[exp_new['exp_id']] = exp_new['our_log_ret']
-        #set cache
         obj.save()
