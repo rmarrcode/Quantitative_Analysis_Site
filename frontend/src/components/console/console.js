@@ -88,84 +88,100 @@ function Console() {
     return table;
   }
 
-  useEffect(() => {
-    getAllBranches()
-  }, []);
+  // useEffect(() => {
+  //   getAllBranches()
+  // }, []);
 
-  return (
-    <div class="row">
-      <div class="column">
-        <h1>Stock Selector</h1>
-        <form>
-          <label>
-            branch:
-            <select name="alg" id="alg" form="alg" onChange={x => setFormBranch(x.target.value)}>
-            {
-              allBranches.map(row => {
-                return (<option value={row}>{row}</option>)
-            })}
-            </select>
-          </label>
-          <br/>
-          <label>
-            alg:
-            <select name="alg" id="alg" form="alg" onChange={x => setFormAlg(x.target.value)}>
-              <option value="">-----</option>
-              <option value="JAXSLAC">JAXSLAC</option>
-              <option value="SAC">SAC</option>
-              <option value="SLAC">SLAC</option>
-            </select>
-          </label>
-          <br/>
-          <label>
-            tickers:
-            <input 
-              type="text"
-              value={formTickers}
-              onChange={(e) => setFormTickers(e.target.value)}
-            />
-          </label>   
-          <br/>
-          <label>
-            start date:
-            <input 
-              type="text"
-              value={formStartDate}
-              onChange={(e) => setFormStartDate(e.target.value)}
-            />
-          </label>       
-          <br/>
-          <label>
-            end date:
-            <input 
-              type="text"
-              value={formEndDate}
-              onChange={(e) => setFormEndDate(e.target.value)}
-            />
-          </label>      
-        </form>
-        <button onClick={deploy}>Submit Now</button>  
-      </div>
+  const updatesSocket = new WebSocket('ws://127.0.0.1/ws/expstate/');
+
+  updatesSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      console.log(data);
+  };
+ 
+  updatesSocket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+  };
+
+  //return (
+    //<div class="row">
+      //<div class="column">
+        //<h1>Stock Selector</h1>
+        //<form>
+          //<label>
+            //branch:
+            //<select name="alg" id="alg" form="alg" onChange={x => setFormBranch(x.target.value)}>
+            //{
+              //allBranches.map(row => {
+                //return (<option value={row}>{row}</option>)
+            //})}
+            //</select>
+          //</label>
+          //<br/>
+          //<label>
+            //alg:
+            //<select name="alg" id="alg" form="alg" onChange={x => setFormAlg(x.target.value)}>
+              //<option value="">-----</option>
+              //<option value="JAXSLAC">JAXSLAC</option>
+              //<option value="SAC">SAC</option>
+              //<option value="SLAC">SLAC</option>
+            //</select>
+          //</label>
+          //<br/>
+          //<label>
+            //tickers:
+            //<input 
+              //type="text"
+              //value={formTickers}
+              //onChange={(e) => setFormTickers(e.target.value)}
+            ///>
+          //</label>   
+          //<br/>
+          //<label>
+            //start date:
+            //<input 
+              //type="text"
+              //value={formStartDate}
+              //onChange={(e) => setFormStartDate(e.target.value)}
+            ///>
+          //</label>       
+          //<br/>
+          //<label>
+            //end date:
+            //<input 
+              //type="text"
+              //value={formEndDate}
+              //onChange={(e) => setFormEndDate(e.target.value)}
+            ///>
+          //</label>      
+        //</form>
+        //<button onClick={deploy}>Submit Now</button>  
+      //</div>
         
-      <div class="column">
-        <h1>PAST EVENTS</h1>
-        {pastEvents.map(element => {
-          return (
-            <div>
-              <tr><td>
-                <p>{element}</p> 
-                {
-                  element in experimentData ? 
-                  <p>{experimentData[element]}</p> : 
-                  <button onClick={x => getExperimentData(element)}>details</button>
-                }
-              </td></tr>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+      //<div class="column">
+        //<h1>PAST EVENTS</h1>
+        //{pastEvents.map(element => {
+          //return (
+            //<div>
+              //<tr><td>
+                //<p>{element}</p> 
+                //{
+                  //element in experimentData ? 
+                  //<p>{experimentData[element]}</p> : 
+                  //<button onClick={x => getExperimentData(element)}>details</button>
+                //}
+              //</td></tr>
+            //</div>
+          //);
+        //})}
+      //</div>
+    //</div>
+  //);
+  return (
+    <div>
+      <h1>PAST EVENTS</h1>
+    </div> 
+  )
 }
 
 export default Console;

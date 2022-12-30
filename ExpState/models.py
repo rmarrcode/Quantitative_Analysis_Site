@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.cache import cache
 import json
+import channels.layers
+from asgiref.sync import async_to_sync
 
 class SingletonModel(models.Model):
 
@@ -29,13 +31,23 @@ class SingletonModel(models.Model):
 def jsonfield_default_value():  # This is a callable
     return {}
 
+
+#make save function
 class ExpState(SingletonModel):
 
     exp_id = models.JSONField(default=jsonfield_default_value)
     
-    #TODO CACHE STUFF
+    # TODO CACHE STUFF
     @classmethod
     def update(cls, exp_new):
         obj = cls.load()
         obj.exp_id[exp_new['exp_id']] = exp_new['our_log_ret']
         obj.save()
+        # notify frontend
+        async_to_sync(channel_layer.group_send)(
+            "test",
+            {
+                "type": "update",
+                "message": {"success": True},
+            },
+        )

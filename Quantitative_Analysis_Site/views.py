@@ -87,7 +87,7 @@ def getBranches(request):
 
 @csrf_exempt
 def updateResults(request):
-    # load experiment data
+    ## load experiment data
     reqstr = request.body.decode('UTF-8')
     data = json.loads(reqstr)
     s3_client = boto3.client(
@@ -97,8 +97,10 @@ def updateResults(request):
     )
     s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=data['exp_id'])
     s3_exp_data = pickle.loads(s3_object['Body'].read())
+    ## update db
     updated_exp_data = {'exp_id': data['exp_id'], 'our_log_ret': tuple(s3_exp_data['our_log_ret'])}
     ExpState.update(updated_exp_data)
+    ##notify frontend
     return JsonResponse({'success': True})
 
 @csrf_exempt
@@ -106,4 +108,4 @@ def getResults(request):
     exp_state = ExpState.load()
     print(exp_state.exp_id)
     return JsonResponse({'success': True})
-    
+

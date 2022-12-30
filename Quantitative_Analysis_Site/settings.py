@@ -135,11 +135,20 @@ STATIC_URL = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-    }
-}
+#ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
+#CHANNEL_LAYERS = {
+    #'default': {
+        #'BACKEND': "channels.layers.InMemoryChannelLayer"
+    #}
+#}
+
+#CHANNEL_LAYERS = {
+#    "default": {
+#        "BACKEND": "channels_redis.core.RedisChannelLayer",
+#        "CONFIG": {
+#            "hosts": [os.environ.get("REDIS_URL")],
+#        },
+#    },
+#}
