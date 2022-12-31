@@ -92,7 +92,11 @@ function Console() {
   //   getAllBranches()
   // }, []);
 
-  const updatesSocket = new WebSocket('ws://127.0.0.1/ws/expstate/');
+  const updatesSocket = new WebSocket('ws://127.0.0.1:8000/ws/expstate/');
+
+  updatesSocket.onopen = () => {
+    console.log("opened")
+  }
 
   updatesSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);

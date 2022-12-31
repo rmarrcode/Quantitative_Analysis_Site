@@ -3,7 +3,7 @@ import json
 
 from channels.generic.websocket import WebsocketConsumer
 
-class ExpState(WebsocketConsumer):
+class ExpStateConsumer(WebsocketConsumer):
     
     def connect(self):
         self.accept()
@@ -16,3 +16,6 @@ class ExpState(WebsocketConsumer):
         message = text_data_json["message"]
 
         self.send(text_data=json.dumps({"message": message}))
+
+    def update(self):
+        self.send(text_data=json.dumps({"message": "test"}))

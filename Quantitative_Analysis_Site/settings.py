@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ExpState',
+    'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +43,6 @@ INSTALLED_APPS = [
     'Quantitative_Analysis_Site',
     'rest_framework',
     'frontend',
-    'ExpState',
-    'channels'
 ]
 
 MIDDLEWARE = [
@@ -137,12 +138,16 @@ STATIC_URL = '/static/'
 
 #DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#ASGI_APPLICATION = "chat.routing.application" #routing.py will handle the ASGI
-#CHANNEL_LAYERS = {
-    #'default': {
-        #'BACKEND': "channels.layers.InMemoryChannelLayer"
-    #}
-#}
+ASGI_APPLICATION = "Quantitative_Analysis_Site.asgi.application" #routing.py will handle the ASGI
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 #CHANNEL_LAYERS = {
 #    "default": {
@@ -152,3 +157,4 @@ STATIC_URL = '/static/'
 #        },
 #    },
 #}
+
