@@ -44,10 +44,7 @@ class ExpState(SingletonModel):
         obj.exp_id[exp_new['exp_id']] = exp_new['our_log_ret']
         obj.save()
         # notify frontend
-        async_to_sync(channel_layer.group_send)(
-            "test",
-            {
-                "type": "update",
-                "message": {"success": True},
-            },
-        )
+        import channels.layers
+        channel_layer = channels.layers.get_channel_layer()
+        from asgiref.sync import async_to_sync
+        async_to_sync(channel_layer.send)('test_channel', {'type': 'hello'})
