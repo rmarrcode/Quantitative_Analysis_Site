@@ -2,11 +2,12 @@
 import json
 
 from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
 
 class ExpStateConsumer(WebsocketConsumer):
     def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = "chat_%s" % self.room_name
+        self.room_name = 'test'
+        self.room_group_name = 'test'
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -34,6 +35,5 @@ class ExpStateConsumer(WebsocketConsumer):
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
-
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))
