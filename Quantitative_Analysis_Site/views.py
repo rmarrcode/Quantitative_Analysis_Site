@@ -28,6 +28,9 @@ import pickle
 
 from ExpState.models import ExpState
 
+import channels.layers
+from asgiref.sync import async_to_sync
+
 # Load .env file
 load_dotenv()
 ALPACA_KEY = os.getenv('ALPACA_KEY')
@@ -62,10 +65,13 @@ def deploy(request):
     key = paramiko.RSAKey.from_private_key_file("Credentials/atticus_key.pem")
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    reqstr = request.body.decode('UTF-8')
+    data = json.loads(reqstr)
+    CMD = 'docker run portfolio_learning --tickers ' + data['tickers']
     try:
-        client.connect(hostname='3.85.2.224', username="ubuntu", pkey=key)
-        stdin, stdout, stderr = client.exec_command('docker run portfolio_learning')
-        print (stdout.read())
+        client.connect(hostname=ALG_IP, username="ubuntu", pkey=key)
+        stdin, stdout, stderr = client.exec_command(CMD)
+        print(stdout.read())
         client.close()
     except Exception as e:
         print (e)
@@ -84,21 +90,33 @@ def getBranches(request):
     x = requests.post(URL, json = {'op': 'getbranches'})
     return JsonResponse(x.json())
 
-
 @csrf_exempt
 def updateResults(request):
     ## load experiment data
-    reqstr = request.body.decode('UTF-8')
-    data = json.loads(reqstr)
+    reqstr = request.body.decode('utf-8')
+    reqjson = json.loads(reqstr)
+    exp_id = reqjson['exp_id']
+    if reqjson['bootstrapping']:
+        channel_layer = channels.layers.get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+                'test',
+            {
+                'type': 'chat_message',
+                'data': {exp_id: "bootstrapping"}
+            }
+        )
+        return JsonResponse({'success': True})
+
     s3_client = boto3.client(
         's3',
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY
     )
-    s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=data['exp_id'])
+    # TODO TRY EXCEPT
+    s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=reqstr)
     s3_exp_data = pickle.loads(s3_object['Body'].read())
     ## update db
-    updated_exp_data = {'exp_id': data['exp_id'], 'our_log_ret': tuple(s3_exp_data['our_log_ret'])}
+    updated_exp_data = {reqstr : tuple(s3_exp_data['our_log_ret'])}
     ExpState.update(updated_exp_data)
     ##notify frontend
     return JsonResponse({'success': True})

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 
 import './console.css';
 
@@ -13,6 +13,20 @@ function Console() {
   const [formStartDate, setFormStartDate] = useState('');
   const [formEndDate, setFormEndDate] = useState('');
   const [experimentData, setExperimentData] = useState({})
+
+  useEffect(() => {
+    const updatesSocket = new WebSocket('ws://127.0.0.1:8000/ws/expstate/');
+    updatesSocket.onopen = () => {
+      console.log("socket is opened")
+    }
+    updatesSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+    }; 
+    updatesSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+  }, []);
 
   const getAllBranches = async event => {
     var requestOptions = {
@@ -88,43 +102,18 @@ function Console() {
     return table;
   }
 
-  const updatesSocket = new WebSocket('ws://127.0.0.1:8000/ws/expstate/');
-
-  updatesSocket.onopen = () => {
-    console.log("opened")
-  }
-
-  updatesSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data);
-  };
- 
-  updatesSocket.onclose = function(e) {
-      console.error('Chat socket closed unexpectedly');
-  };
-
   return (
     <div class="row">
       <div class="column">
         <h1>Stock Selector</h1>
         <form>
           <label>
-            branch:
-            <select name="alg" id="alg" form="alg" onChange={x => setFormBranch(x.target.value)}>
-            {
-              allBranches.map(row => {
-                return (<option value={row}>{row}</option>)
-            })}
-            </select>
-          </label>
-          <br/>
-          <label>
             alg:
             <select name="alg" id="alg" form="alg" onChange={x => setFormAlg(x.target.value)}>
               <option value="">-----</option>
               <option value="JAXSLAC">JAXSLAC</option>
-              <option value="SAC">SAC</option>
-              <option value="SLAC">SLAC</option>
+              <option value="AEJAXSAC">AEJAXSAC</option>
+              <option value="VAEJAXSAC">VAEJAXSAC</option>
             </select>
           </label>
           <br/>
@@ -137,28 +126,11 @@ function Console() {
             />
           </label>   
           <br/>
-          <label>
-            start date:
-            <input 
-              type="text"
-              value={formStartDate}
-              onChange={(e) => setFormStartDate(e.target.value)}
-            />
-          </label>       
-          <br/>
-          <label>
-            end date:
-            <input 
-              type="text"
-              value={formEndDate}
-              onChange={(e) => setFormEndDate(e.target.value)}
-            />
-          </label>      
         </form>
         <button onClick={deploy}>Submit Now</button>  
       </div>
         
-      <div class="column">
+      {/* <div class="column">
         <h1>PAST EVENTS</h1>
         {pastEvents.map(element => {
           return (
@@ -174,7 +146,7 @@ function Console() {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
   return (

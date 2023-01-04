@@ -34,6 +34,7 @@ class ExpStateConsumer(WebsocketConsumer):
 
     # Receive message from room group
     def chat_message(self, event):
-        message = event["message"]
+        print(event)
+        message = event["data"]
         # Send message to WebSocket
-        self.send(text_data=json.dumps({"message": message}))
+        self.send(text_data=json.dumps({"data": message}))

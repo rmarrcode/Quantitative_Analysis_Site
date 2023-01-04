@@ -41,17 +41,15 @@ class ExpState(SingletonModel):
     @classmethod
     def update(cls, exp_new):
         obj = cls.load()
-        obj.exp_id[exp_new['exp_id']] = exp_new['our_log_ret']
+        obj.exp_id = exp_new
         obj.save()
         # notify frontend
-        import channels.layers
         channel_layer = channels.layers.get_channel_layer()
-        from asgiref.sync import async_to_sync
         async_to_sync(channel_layer.group_send)(
                 'test',
             {
                 'type': 'chat_message',
-                'message': "event_trigered_from_views"
+                'data': exp_new
             }
         ) 
 
