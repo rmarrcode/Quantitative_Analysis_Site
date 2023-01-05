@@ -68,6 +68,7 @@ def deploy(request):
     reqstr = request.body.decode('UTF-8')
     data = json.loads(reqstr)
     CMD = 'docker run portfolio_learning --tickers ' + data['tickers']
+    print(CMD)
     try:
         client.connect(hostname=ALG_IP, username="ubuntu", pkey=key)
         stdin, stdout, stderr = client.exec_command(CMD)
@@ -96,6 +97,7 @@ def updateResults(request):
     reqstr = request.body.decode('utf-8')
     reqjson = json.loads(reqstr)
     exp_id = reqjson['exp_id']
+    print(reqjson)
     if reqjson['bootstrapping']:
         channel_layer = channels.layers.get_channel_layer()
         async_to_sync(channel_layer.group_send)(

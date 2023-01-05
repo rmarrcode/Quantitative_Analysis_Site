@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 
 import './console.css';
+import SITE_IP from '../constants.js'
 
 function Console() {
 
@@ -15,9 +16,10 @@ function Console() {
   const [experimentData, setExperimentData] = useState({})
 
   useEffect(() => {
-    const updatesSocket = new WebSocket('ws://127.0.0.1:8000/ws/expstate/');
+    const sockUrl = 'ws://127.0.0.1:8000/ws/expstate/';
+    const updatesSocket = new WebSocket(sockUrl);
     updatesSocket.onopen = () => {
-      console.log("socket is opened")
+      console.log("socket is opened")                             
     }
     updatesSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
