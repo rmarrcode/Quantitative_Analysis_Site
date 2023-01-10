@@ -72,6 +72,7 @@ def deploy(request):
     try:
         client.connect(hostname=ALG_IP, username="ubuntu", pkey=key)
         stdin, stdout, stderr = client.exec_command(CMD)
+        print(stderr.read())
         print(stdout.read())
         client.close()
     except Exception as e:
@@ -97,30 +98,44 @@ def updateResults(request):
     reqstr = request.body.decode('utf-8')
     reqjson = json.loads(reqstr)
     exp_id = reqjson['exp_id']
-    print(reqjson)
-    if reqjson['bootstrapping']:
-        channel_layer = channels.layers.get_channel_layer()
+    channel_layer = channels.layers.get_channel_layer()
+    if reqjson['bootstrapping']:   
         async_to_sync(channel_layer.group_send)(
                 'test',
             {
                 'type': 'chat_message',
-                'data': {exp_id: "bootstrapping"}
+                'data': {
+                    'exp_id': exp_id,
+                    'returns': {}
+                }
             }
         )
         return JsonResponse({'success': True})
-
+    #bypass this by getting most recent info
     s3_client = boto3.client(
         's3',
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY
     )
     # TODO TRY EXCEPT
-    s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=reqstr)
+    s3_object = s3_client.get_object(Bucket='portfolio-learning', Key=exp_id)
     s3_exp_data = pickle.loads(s3_object['Body'].read())
     ## update db
-    updated_exp_data = {reqstr : tuple(s3_exp_data['our_log_ret'])}
-    ExpState.update(updated_exp_data)
+    ## updated_exp_data = {reqstr : tuple(s3_exp_data['our_log_ret'])}
+    ## print(f'-------{updated_exp_data}')
+    ## ExpState.update(updated_exp_data)
     ##notify frontend
+    print(f"s3_exp_data {s3_exp_data}")
+    async_to_sync(channel_layer.group_send)(
+                'test',
+            {
+                'type': 'chat_message',
+                'data': {
+                    'exp_id': exp_id,
+                    'returns': s3_exp_data
+                }
+            }
+        )
     return JsonResponse({'success': True})
 
 @csrf_exempt

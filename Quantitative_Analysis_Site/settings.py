@@ -140,6 +140,7 @@ STATIC_URL = '/static/'
 
 ASGI_APPLICATION = "Quantitative_Analysis_Site.asgi.application" #routing.py will handle the ASGI
 
+#TODO investigate and
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -148,13 +149,3 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
-#CHANNEL_LAYERS = {
-#    "default": {
-#        "BACKEND": "channels_redis.core.RedisChannelLayer",
-#        "CONFIG": {
-#            "hosts": [os.environ.get("REDIS_URL")],
-#        },
-#    },
-#}
-
