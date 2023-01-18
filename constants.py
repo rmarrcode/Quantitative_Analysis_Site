@@ -1,4 +1,4 @@
-ALG_IP = "34.230.30.170"
+ALG_IP = "3.80.96.174"
 ALG_INSTANCE_ID = "i-0d8d1c65cba1e9066"
 PATH_TO_SSH_KEY = "Credentials/atticus_key.pem"
 ALG_USER = "ubuntu"

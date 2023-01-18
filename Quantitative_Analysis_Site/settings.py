@@ -149,3 +149,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+CSRF_COOKIE_SECURE = False

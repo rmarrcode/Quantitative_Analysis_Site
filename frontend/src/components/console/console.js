@@ -15,65 +15,42 @@ function Console() {
   const [formEndDate, setFormEndDate] = useState('');
   const [experimentData, setExperimentData] = useState([])
 
-  const updateExperimentData = (newExpData) => {
-    const found = false
-    const updateditems = experimentData.map((item) => {
-      if (item.exp_id === newExpData.exp_id) {
-        found = true
-        return { exp_id: item.exp_id, returns: newExpData.returns };
-      }
-      return item;
-    });
-    if (!found) {
-      setExperimentData(...experimentData, newExpData)
-    }
-    console.log(updateditems)
-    setExperimentData(updateditems);
-  };
-
   useEffect(() => {
-    console.log(constants.SITE_IP)
-    //GET OWN IP?
+
+    const updateExperimentData = (newExpData) => {
+      var found = false
+      const updateditems = experimentData.map((item) => {
+        console.log(item.exp_id)
+        console.log(newExpData.exp_id)
+        if (item.exp_id === newExpData.exp_id) {
+          found = true
+          console.log(found)
+          return { exp_id: item.exp_id, returns: newExpData.returns };
+        }
+        return item;
+      });
+      if (!found) {
+        console.log(newExpData)
+        setExperimentData([...experimentData, newExpData])
+      }
+      else {
+        setExperimentData(updateditems);
+      }
+    };
+
     const sockUrl = 'ws://' + constants.SITE_IP + ':8000/ws/expstate/';
-    console.log(sockUrl)
     const updatesSocket = new WebSocket(sockUrl);
     updatesSocket.onopen = () => {
-      console.log("socket is opened")                             
+      console.log("socket is opened")                            
     }
-    // {
-    // "exp_id": "20230108_2253_BAC_algo_summary",
-    // "returns": {}
-    // }
-    
-    // {
-    //   "exp_id": "20230108_2249_BAC_algo_summary",
-    //   "returns": {
-    //       "date": [
-    //           "31-01-2011",
-    //           "02-02-2011",
-    //           "03-02-2011"
-    //       ],
-    //       "our_log_ret": [
-    //           0.02519607513651323,
-    //           0.008541416232240806,
-    //           0.009346907882019195
-    //       ],
-    //       "BAC_log_ret": [
-    //           0.03927673713155808,
-    //           -0.0028050509276083204,
-    //           0.012561225872972695
-    //       ]
-    //   }
-    // }
     updatesSocket.onmessage = function(e) {
         const data = JSON.parse(e.data)['data'];
-        console.log(data);
         updateExperimentData(data)
     }; 
     updatesSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
-  }, []);
+  }, [experimentData, setExperimentData]);
 
   const getAllBranches = async event => {
     var requestOptions = {
@@ -138,7 +115,7 @@ function Console() {
     }
     return table;
   }
-
+  console.log(experimentData)
   return (
     <div class="row">
       <div class="column">

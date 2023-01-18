@@ -13,7 +13,6 @@ function MatadorSignUp() {
       "X-CSRFToken": Cookies.get('csrftoken')
     });
   
-  
     const handleSignup=async(event)=>{
       // Prevent the form from doing the default html garbage
       event.preventDefault();

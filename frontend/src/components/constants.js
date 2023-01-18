@@ -1,1 +1,1 @@
-export const SITE_IP = "52.90.155.184"
+export const SITE_IP = "3.87.133.54"

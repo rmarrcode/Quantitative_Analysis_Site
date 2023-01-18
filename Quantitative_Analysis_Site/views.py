@@ -99,6 +99,7 @@ def updateResults(request):
     reqjson = json.loads(reqstr)
     exp_id = reqjson['exp_id']
     channel_layer = channels.layers.get_channel_layer()
+    print(reqjson)
     if reqjson['bootstrapping']:   
         async_to_sync(channel_layer.group_send)(
                 'test',
