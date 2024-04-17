@@ -8,9 +8,9 @@ import cloudpickle
 
 def getdata():
     experiment_dir = "experiments"
-    api = API("wOduPvxJkmBFNXJIbvZmgDwBp")
-    workspace = "alex-guerra-618"
-    project_name = "tests"
+    api = API(API_KEY)
+    workspace = WORKSPACE
+    project_name = TESTS
     ## Return all of my workspace names in a list:
     experiments = api.get(workspace, project_name)
     for exp in experiments:
